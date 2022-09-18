@@ -2,14 +2,14 @@
 
 .PHONY: build
 build:
-	go build ./...
+	go build -o build/ ./...
 
 .PHONY: dev-check
 dev-check: build docker-build test lint
 
 .PHONY: docker-build
 docker-build:
-	# TODO(dfurman): implement
+	docker-compose build
 
 .PHONY: fmt
 fmt:

@@ -15,7 +15,10 @@ TODO
 
 ## Usage
 
-TODO
+Both services are containerized and can be run with docker compose. Usage:
+1. Run services: `docker-compose up`.
+2. Stop services by press Ctrl+C.
+3. Clean up containers: `docker-compose down`.
 
 ## Development
 
@@ -24,8 +27,8 @@ Optional development tools:
 - [Protoc v3](https://grpc.io/docs/protoc-installation/), [Protoc-gen-go, Protoc-gen-go-grpc](https://grpc.io/docs/languages/go/quickstart/) for gRPC code generation
 
 Development commands:
-- Build code and Docker image, test and lint code: `make dev-check`
-- Build code: `make build`
+- Build binaries and Docker image, test and lint code: `make dev-check`
+- Build binaries to build directory: `make build`
 - Build Docker image of the Ports service: `make docker-build`
 - Run tests: `make test`
 - Run tests with race detector: `make test-race`
@@ -34,5 +37,4 @@ Development commands:
 - Regenerate the source code: `make generate`
 
 TODO:
-- Dockerize the service
 - Add docstrings and documentation

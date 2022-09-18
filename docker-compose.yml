@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  portssvc:
+    build:
+      context: .
+      target: portssvc
+    environment:
+      GRPC_SERVER_ADDRESS: :9090
+    ports:
+      - "127.0.0.1:9090:9090" # Bind to localhost for development
+
+  ingestsvc:
+    build:
+      context: .
+      target: ingestsvc
+    depends_on:
+      - portssvc
+    environment:
+      PORTS_FILE_PATH: /app/ports.json
+      PORTS_SVC_ADDRESS: portssvc:9090
+    volumes:
+      - ./internal/ingestsvc/testdata/ports.json:/app/ports.json
