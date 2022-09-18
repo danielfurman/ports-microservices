@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package ports;
+
+option go_package = "github.com/danielfurman/ports-microservices/internal/portssvc/portsgrpc";
+
+import "google/protobuf/empty.proto";
+
+service PortService {
+  rpc StorePort(StorePortRequest) returns (google.protobuf.Empty) {}
+  rpc ListPorts(google.protobuf.Empty) returns (ListPortsResponse) {}
+}
+
+message Port {
+  string id = 1;
+  string name = 2;
+  string city = 3;
+  string country = 4;
+  repeated string alias = 5;
+  repeated string regions = 6;
+  repeated double coordinates = 7;
+  string province = 8;
+  string timezone = 9;
+  repeated string unlocs = 10;
+  string code = 11;
+}
+
+message StorePortRequest {
+  Port port = 2;
+}
+
+message ListPortsResponse {
+  repeated Port ports = 1;
+}
