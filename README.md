@@ -72,7 +72,7 @@ Development tools:
 - [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) for vulnerability analysis: `go install golang.org/x/vuln/cmd/govulncheck@latest`
 
 Development commands:
-- Build binaries and Docker image, test and lint code: `make dev-check`
+- Build binaries and Docker images; test and lint code: `make dev-check`
 - Build binaries to build directory: `make build`
 - Build Docker image of the Ports service: `make docker-build`
 - Run tests: `make test`

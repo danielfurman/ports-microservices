@@ -25,9 +25,9 @@ type Service struct {
 
 // Config is a config for Ingest service.
 type Config struct {
-	// PortsFilePath is a path to the JSON file containing input ports. Required.
+	// PortsFilePath is a path to the JSON file containing input ports. Env var: PORTS_FILE_PATH. Required.
 	PortsFilePath string `env:"PORTS_FILE_PATH,notEmpty"`
-	// PortsServiceAddress is a TCP address of the Ports service. Default: ":9090".
+	// PortsServiceAddress is a TCP address of the Ports service. Env var: PORTS_SVC_ADDRESS. Default: ":9090".
 	PortsServiceAddress string `env:"PORTS_SVC_ADDRESS" envDefault:":9090"`
 }
 

@@ -29,7 +29,7 @@ type GRPCServer struct {
 
 // Config is a configuration for GRPCServer.
 type Config struct {
-	// GRPCServerAddress is a TCP address of the server. Default: ":9090".
+	// GRPCServerAddress is a TCP address of the server. Env var: GRPC_SERVER_ADDRESS. Default: ":9090".
 	GRPCServerAddress string `env:"GRPC_SERVER_ADDRESS" envDefault:":9090"`
 }
 
