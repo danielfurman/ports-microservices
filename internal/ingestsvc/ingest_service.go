@@ -1,3 +1,5 @@
+// Package ingestsvc contains source code for Ingest service that allows to read port resources from input JSON file
+// and store them in Ports service.
 package ingestsvc
 
 import (
@@ -13,6 +15,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Service is an Ingest service.
 type Service struct {
 	cfg Config
 
@@ -20,11 +23,15 @@ type Service struct {
 	log         *logrus.Entry
 }
 
+// Config is a config for Ingest service.
 type Config struct {
-	PortsFilePath       string `env:"PORTS_FILE_PATH,notEmpty"`
+	// PortsFilePath is a path to the JSON file containing input ports. Required.
+	PortsFilePath string `env:"PORTS_FILE_PATH,notEmpty"`
+	// PortsServiceAddress is a TCP address of the Ports service. Default: ":9090".
 	PortsServiceAddress string `env:"PORTS_SVC_ADDRESS" envDefault:":9090"`
 }
 
+// NewService creates new Ingest service with given configuration.
 func NewService(cfg Config) (Service, error) {
 	logs.Configure()
 	log := logs.NewLogger("ingest-service")
@@ -42,6 +49,12 @@ func NewService(cfg Config) (Service, error) {
 	}, nil
 }
 
+// Run reads all port resources from specified in input JSON file and transmits them to Ports service via gRPC.
+//
+// The example JSON file with a format expected by the service is located in ./testdata/ports.json.
+// Resources are read from the file one-by-one with a stream to reduce memory consumption and support large files.
+// Run can be stopped by context cancel/timeout.
+// This function is meant to be called only once, because it closes Ports client connection.
 func (s Service) Run(ctx context.Context) (err error) {
 	defer func() {
 		cErr := s.portsClient.Close()
@@ -119,6 +132,7 @@ func (s Service) decodeAndIngestPort(ctx context.Context, decoder *json.Decoder)
 	return nil
 }
 
+// Port models a JSON representation of the port.
 type Port struct {
 	Name        string    `json:"name"`
 	City        string    `json:"city"`

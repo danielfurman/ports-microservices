@@ -22,6 +22,8 @@ generate:
 
 .PHONY: lint
 lint:
+	# govulncheck in golangci-lint ticket: https://github.com/golangci/golangci-lint/issues/3094
+	govulncheck ./...
 	golangci-lint run ./...
 
 .PHONY: test

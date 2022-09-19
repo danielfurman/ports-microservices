@@ -22,9 +22,10 @@ Both services are containerized and can be run with docker compose. Usage:
 
 ## Development
 
-Optional development tools:
-- [Golangci-lint](https://golangci-lint.run/usage/install/#local-installation) for static code analysis
+Development tools:
 - [Protoc v3](https://grpc.io/docs/protoc-installation/), [Protoc-gen-go, Protoc-gen-go-grpc](https://grpc.io/docs/languages/go/quickstart/) for gRPC code generation
+- [Golangci-lint](https://golangci-lint.run/usage/install/#local-installation) for static code analysis
+- [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) for vulnerability analysis: `go install golang.org/x/vuln/cmd/govulncheck@latest`
 
 Development commands:
 - Build binaries and Docker image, test and lint code: `make dev-check`
@@ -35,6 +36,3 @@ Development commands:
 - Run static code analysis: `make lint`
 - Format source code: `make fmt`
 - Regenerate the source code: `make generate`
-
-TODO:
-- Add docstrings and documentation

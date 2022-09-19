@@ -1,3 +1,4 @@
+// Package portsclient implements Ports service API client.
 package portsclient
 
 import (
@@ -12,12 +13,15 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
+// GRPC is Ports service gRPC client.
 type GRPC struct {
 	client     portsgrpc.PortServiceClient
 	connection *grpc.ClientConn
 	log        *logrus.Entry
 }
 
+// NewGRPC creates new Ports service gRPC client for given server address.
+// GRPC.Close() should be called when client is no longer needed.
 func NewGRPC(serverAddress string) (GRPC, error) {
 	log := logs.NewLogger("ports-client")
 
@@ -41,6 +45,7 @@ func dialOptions() []grpc.DialOption {
 	}
 }
 
+// StorePort stores given port in Ports service.
 func (g GRPC) StorePort(ctx context.Context, port *portsgrpc.Port) error {
 	_, err := g.client.StorePort(ctx, &portsgrpc.StorePortRequest{
 		Port: port,
@@ -48,11 +53,13 @@ func (g GRPC) StorePort(ctx context.Context, port *portsgrpc.Port) error {
 	return err
 }
 
+// ListPorts lists all ports stored in Ports service.
 func (g GRPC) ListPorts(ctx context.Context) ([]*portsgrpc.Port, error) {
 	response, err := g.client.ListPorts(ctx, &emptypb.Empty{})
 	return response.GetPorts(), err
 }
 
+// Close closes the client connection.
 func (g GRPC) Close() error {
 	return g.connection.Close()
 }

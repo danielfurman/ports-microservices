@@ -1,4 +1,5 @@
-// Package logs facilitates creating of configured Logrus logger.
+// Package logs allows to configure application logging and create new loggers.
+//
 // Logger created with NewLogger() should be preferred over global Logger.
 // Use logrus.WithField() and logrus.WithFields() methods with "dash-case" keys for additional log parameters.
 package logs
@@ -17,6 +18,7 @@ func Configure() {
 	logrus.SetLevel(defaultLevel)
 }
 
+// NewLogger creates new Logrus logger with given name.
 func NewLogger(name string) *logrus.Entry {
 	l := logrus.New()
 	l.Level = defaultLevel

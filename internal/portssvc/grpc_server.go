@@ -1,3 +1,5 @@
+// Package portssvc implement Ports domain service that allows to store and list Ports in persistence layer
+// via gRPC API.
 package portssvc
 
 import (
@@ -14,6 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
+// GRPCServer is a gRPC server for Ports domain service.
 type GRPCServer struct {
 	cfg Config
 
@@ -25,10 +28,13 @@ type GRPCServer struct {
 	listenerReady   chan struct{}
 }
 
+// Config is a configuration for GRPCServer.
 type Config struct {
+	// GRPCServerAddress is a TCP address of the server. Default: ":9090".
 	GRPCServerAddress string `env:"GRPC_SERVER_ADDRESS" envDefault:":9090"`
 }
 
+// NewServer creates new GRPCServer with given configuration.
 func NewServer(cfg Config) *GRPCServer {
 	logs.Configure()
 	log := logs.NewLogger("ports-server")
@@ -43,8 +49,7 @@ func NewServer(cfg Config) *GRPCServer {
 	}
 }
 
-// Serve starts the gRPC Ports server on given TCP address.
-// The server is gracefully stopped on context cancel/timeout.
+// Serve starts the gRPC Ports server. The server is gracefully stopped on context cancel/timeout.
 // TODO(dfurman): support request/response logging.
 func (s *GRPCServer) Serve(ctx context.Context) error {
 	grpcServer := grpc.NewServer()
@@ -74,6 +79,7 @@ func (s *GRPCServer) gracefulStopOnCancel(ctx context.Context, grpcServer *grpc.
 	grpcServer.GracefulStop()
 }
 
+// Address return the TCP address of the server.
 func (s *GRPCServer) Address() net.Addr {
 	<-s.listenerReady
 	return s.listenerAddress
@@ -83,6 +89,7 @@ func (s *GRPCServer) markListenerReady() {
 	close(s.listenerReady)
 }
 
+// StorePort handles the store port request.
 func (s *GRPCServer) StorePort(ctx context.Context, req *portsgrpc.StorePortRequest) (*emptypb.Empty, error) {
 	err := s.service.StorePort(
 		ctx,
@@ -91,6 +98,7 @@ func (s *GRPCServer) StorePort(ctx context.Context, req *portsgrpc.StorePortRequ
 	return &emptypb.Empty{}, err
 }
 
+// ListPorts handles the list ports request.
 func (s *GRPCServer) ListPorts(ctx context.Context, _ *emptypb.Empty) (*portsgrpc.ListPortsResponse, error) {
 	p, err := s.service.ListPorts(ctx)
 	return &portsgrpc.ListPortsResponse{

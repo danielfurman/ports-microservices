@@ -2,6 +2,7 @@ package ports
 
 import "errors"
 
+// Port is a domain entity.
 type Port struct {
 	ID          string
 	Name        string
@@ -16,6 +17,7 @@ type Port struct {
 	Code        string
 }
 
+// Validate checks if port's state is valid.
 func (p Port) Validate() error {
 	if p.ID == "" {
 		return errors.New("ID is required")

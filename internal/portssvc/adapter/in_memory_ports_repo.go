@@ -10,12 +10,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// InMemoryPortsRepository allows to store Ports in memory with a hashmap data structure.
+// It is safe for concurrent use.
 type InMemoryPortsRepository struct {
 	ports      map[string]*ports.Port
 	portsMutex sync.RWMutex
 	log        *logrus.Entry
 }
 
+// NewInMemoryPortsRepository creates a new repository.
 func NewInMemoryPortsRepository() *InMemoryPortsRepository {
 	return &InMemoryPortsRepository{
 		ports: make(map[string]*ports.Port),
@@ -23,6 +26,7 @@ func NewInMemoryPortsRepository() *InMemoryPortsRepository {
 	}
 }
 
+// StorePort stores given port in memory.
 func (r *InMemoryPortsRepository) StorePort(_ context.Context, port *ports.Port) error {
 	r.log.WithField("port", port).Debug("Storing port")
 	r.portsMutex.Lock()
@@ -32,6 +36,7 @@ func (r *InMemoryPortsRepository) StorePort(_ context.Context, port *ports.Port)
 	return nil
 }
 
+// ListPorts lists all ports stored in memory.
 func (r *InMemoryPortsRepository) ListPorts(_ context.Context) ([]ports.Port, error) {
 	r.log.Debug("Listing ports")
 	r.portsMutex.RLock()
