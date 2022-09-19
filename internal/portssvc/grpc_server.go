@@ -1,5 +1,4 @@
-// Package portssvc implement Ports domain service that allows to store and list Ports in persistence layer
-// via gRPC API.
+// Package portssvc implement Ports that exposes a gRPC API that allows to store and list Ports in persistence layer.
 package portssvc
 
 import (
